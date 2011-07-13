@@ -128,6 +128,10 @@ class Uploads {
      */
     function load_extensions( $mime_types ) {
         $options = self::load_settings();
+        
+        if ( $options['uploads_disabled'] )
+            return array();
+        
         if ( !empty( $options['uploads_ext'] ) ) {
             $new_mimes = self::parse_ext( $options['uploads_ext'] );
             return array_merge( $mime_types, $new_mimes );
