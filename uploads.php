@@ -39,6 +39,11 @@ class Uploads {
     );
     
     /**
+     * The query var to be prepended in the masked url
+     */
+    static $query_var = 'get_attachment';
+    
+    /**
      * init()
      * 
      * Sets the hooks and other initialization stuff
@@ -46,7 +51,9 @@ class Uploads {
     function init() {
         add_action( 'admin_menu', array( __CLASS__, 'page' ) );
         add_action( 'init', array( __CLASS__, 'localization' ) );
+        add_action( 'wp', array( __CLASS__, 'serve_file' ) );
         add_filter( 'upload_mimes', array( __CLASS__, 'load_extensions' ) );
+        add_filter( 'wp_get_attachment_url', array( __CLASS__, 'mask' ), 10, 2 );
     }
 
     /**
@@ -137,6 +144,53 @@ class Uploads {
             return array_merge( $mime_types, $new_mimes );
         }
         return $mime_types;
+    }
+    
+    /**
+     * mask( $url, $post_id )
+     * Filter masks the attachment url
+     *
+     * @param $url, initial url
+     * @param $aid, the ID of the attachment
+     * @return String, a new, masked url
+     */
+    function mask( $url, $aid ) {
+        $options = self::load_settings();
+        
+        if ( !$options['uploads_mask'] )
+            return $url;
+        
+        if ( $aid ) {
+            $hash = base64_encode( $aid ) . base64_encode( NONCE_KEY );
+            $hash = base64_encode( $hash );
+            return get_site_url() . '?' . self::$query_var . '=' . $hash ;
+        }
+        
+        return $mime_types;
+    }
+    
+    /**
+     * serve_file()
+     * Serves the requested file if masked. Hooks into `wp`
+     */
+    function serve_file() {
+        if ( !isset( $_REQUEST[self::$query_var] ) )
+            return;
+        
+        $upload_name = $_REQUEST[self::$query_var];
+        
+        if ( $upload_name ) {
+            $hash = base64_decode( $upload_name );
+            $salt_hash = base64_encode( NONCE_KEY );
+            $aid = base64_decode( str_replace( $salt_hash, '', $hash ) );
+            $u = get_post( $aid );
+            if( is_object( $u ) && $u->post_type = 'attachment' ) {
+                header('Content-Type: ' . $u->post_mime_type );
+                header('Content-Disposition: attachment; filename="' . basename( $u->guid ) . '"' );
+                readfile( get_attached_file( $aid ) );
+            }
+        }
+        return;
     }
     
     /**

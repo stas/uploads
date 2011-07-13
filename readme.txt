@@ -14,6 +14,7 @@ This plugin allows you to:
 
 * Manage allowed file extensions for uploads
 * Mask files location
+* Disable uploads at all
 
 == Installation ==
 
