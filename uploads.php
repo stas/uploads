@@ -161,7 +161,7 @@ class Uploads {
             return $url;
         
         if ( $aid ) {
-            $hash = base64_encode( $aid ) . base64_encode( NONCE_KEY );
+            $hash = $aid * hexdec( md5( NONCE_KEY ) );
             $hash = base64_encode( $hash );
             return get_site_url() . '?' . self::$query_var . '=' . $hash ;
         }
@@ -181,8 +181,8 @@ class Uploads {
         
         if ( $upload_name ) {
             $hash = base64_decode( $upload_name );
-            $salt_hash = base64_encode( NONCE_KEY );
-            $aid = base64_decode( str_replace( $salt_hash, '', $hash ) );
+            $salt_hash = hexdec( md5( NONCE_KEY ) );
+            $aid = $hash / $salt_hash;
             $u = get_post( $aid );
             if( is_object( $u ) && $u->post_type = 'attachment' ) {
                 header('Content-Type: ' . $u->post_mime_type );
