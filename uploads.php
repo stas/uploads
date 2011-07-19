@@ -49,7 +49,11 @@ class Uploads {
      * Sets the hooks and other initialization stuff
      */
     function init() {
-        add_action( 'admin_menu', array( __CLASS__, 'page' ) );
+        // MultiSite Support
+        add_action(
+            is_multisite() ? 'network_admin_menu' : 'admin_menu',
+            array( __CLASS__, 'page')
+        );
         add_action( 'init', array( __CLASS__, 'localization' ) );
         add_action( 'wp', array( __CLASS__, 'serve_file' ) );
         add_filter( 'upload_mimes', array( __CLASS__, 'load_extensions' ) );
@@ -166,7 +170,7 @@ class Uploads {
             return get_site_url() . '?' . self::$query_var . '=' . $hash ;
         }
         
-        return $mime_types;
+        return $url;
     }
     
     /**
