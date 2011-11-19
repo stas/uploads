@@ -3,7 +3,7 @@ Contributors: sushkov
 Tags: uploads, files, extenstions, mask, security, media, attachments
 Requires at least: WordPress 2.9
 Tested up to: WordPress 3.2
-Stable tag: 0.2
+Stable tag: 0.3
 Donate link: http://stas.nerd.ro/pub/donate/
 
 Better control over WordPress uploads
@@ -27,6 +27,9 @@ Please report bugs on [plugin page issues tracker](https://github.com/stas/uploa
 
 
 == Changelog ==
+
+= 0.3 =
+* Removed a constant name used in WordPress MultiSite. props @ejsiddiqui
 
 = 0.2 =
 * Added MultiSite support
