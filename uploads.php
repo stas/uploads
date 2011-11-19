@@ -26,8 +26,6 @@ Author URI: http://stas.nerd.ro/
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define( 'UPLOADS', '0.2' );
-
 class Uploads {
     /**
      * Name of the meta keys
