@@ -4,7 +4,7 @@ Plugin Name: WordPress Uploads
 Plugin URI: http://wordpress.org/extend/plugins/uploads/
 Description: Better control over WordPress uploads
 Author: Stas Sușcov
-Version: 0.3
+Version: 0.4
 Author URI: http://stas.nerd.ro/
 */
 ?>
