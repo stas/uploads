@@ -47,11 +47,7 @@ class Uploads {
      * Sets the hooks and other initialization stuff
      */
     function init() {
-        // MultiSite Support
-        add_action(
-            is_multisite() ? 'network_admin_menu' : 'admin_menu',
-            array( __CLASS__, 'page')
-        );
+        add_action( 'admin_menu', array( __CLASS__, 'page') );
         add_action( 'init', array( __CLASS__, 'localization' ) );
         add_action( 'wp', array( __CLASS__, 'serve_file' ) );
         add_filter( 'upload_mimes', array( __CLASS__, 'load_extensions' ) );
