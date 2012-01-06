@@ -33,7 +33,8 @@ class Uploads {
     static $meta_keys = array(
         'uploads_disabled',
         'uploads_mask',
-        'uploads_ext'
+        'uploads_ext',
+        'uploads_ext_denied'
     );
     
     /**
@@ -94,6 +95,8 @@ class Uploads {
                 $options['uploads_mask'] = !empty( $_POST['uploads']['mask'] );
             if ( isset( $_POST['uploads']['ext'] ) )
                 $options['uploads_ext'] = esc_textarea( $_POST['uploads']['ext'] );
+            if ( isset( $_POST['uploads']['ext-denied'] ) )
+                $options['uploads_ext_denied'] = esc_textarea( $_POST['uploads']['ext-denied'] );
             
             foreach ( $options as $k => $v )
                 update_option( $k, $v );
@@ -138,9 +141,15 @@ class Uploads {
             return array();
         
         if ( !empty( $options['uploads_ext'] ) ) {
-            $new_mimes = self::parse_ext( $options['uploads_ext'] );
-            return array_merge( $mime_types, $new_mimes );
+            $allowed_mimes = self::parse_ext( $options['uploads_ext'] );
+            $mime_types = array_merge( $mime_types, $allowed_mimes );
         }
+
+        if ( !empty( $options['uploads_ext_denied'] ) ) {
+            $denied_mimes = self::parse_ext( $options['uploads_ext_denied'] );
+            $mime_types = array_diff( $mime_types, $denied_mimes );
+        }
+
         return $mime_types;
     }
     

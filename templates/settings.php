@@ -35,8 +35,13 @@
                         <label for="upload-mask"><?php _e( 'Mask upload location','uploads' )?></label>
                     </p>
                     <p class="form-field">
-                        <label for="upload-extensions"><?php _e( 'Allowed extensions/mime types','uploads' )?></label>
-                        <textarea id="upload-extensions" name="uploads[ext]" class="widefat" style="min-height: 200px;"><?php echo $uploads_ext ? $uploads_ext : ''; ?></textarea>
+                        <label>
+                            <?php _e( 'Allowed (left) and Denied (right) extensions/mime types','uploads' )?>
+                        </label>
+                        <br/>
+                        <textarea id="upload-extensions" name="uploads[ext]" class="widefat" style="min-height: 200px; width: 45%;"><?php echo $uploads_ext ? $uploads_ext : ''; ?></textarea>
+                        <textarea id="upload-extensions-denied" name="uploads[ext-denied]" class="widefat" style="min-height: 200px; width: 45%;"><?php echo $uploads_ext_denied ? $uploads_ext_denied : ''; ?></textarea>
+
                         <br />
                         <em><small>
                             <?php _e( 'One per line.','uploads' )?>
